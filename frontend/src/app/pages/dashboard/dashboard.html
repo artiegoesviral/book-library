@@ -1,0 +1,51 @@
+<button (click)="setType('book')">Books</button>
+<button (click)="setType('comic')">Comics</button>
+
+<form [formGroup]="form">
+
+    <input type="text" placeholder="Title" formControlName="title">
+    <input type="text" placeholder="Author" formControlName="author">
+    <input type="text" placeholder="Genre" formControlName="genre">
+
+    <select formControlName="format">
+        @for (format of formats; track format) {
+        <option [value]="format">
+            {{ format }}
+        </option>
+        }
+    </select>
+
+    <label>
+        <input type="checkbox" formControlName="read">
+        Read
+    </label>
+
+    <button type="button" (click)="submit()">
+        Add
+    </button>
+
+</form>
+
+@for (
+item of items.filter(i => i.media_type === selectedType);
+track item.id
+) {
+
+<div class="item-card">
+
+    <h3>{{ item.title }}</h3>
+    <p>{{ item.author }}</p>
+    <p>{{ item.genre }}</p>
+    <p>{{ item.format }}</p>
+
+    @if (item.read) {
+    <span>Read</span>
+    } @else {
+    <span>Unread</span>
+    }
+
+</div>
+
+}
+
+<button (click)="logout()">Logout</button>

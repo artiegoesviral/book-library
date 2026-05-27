@@ -1,0 +1,25 @@
+<header class="navbar">
+    <div class="nav-left">
+        <a routerLink="/">Home</a>
+    </div>
+</header>
+
+<section class="auth-page">
+    <div class="auth-container">
+        <h2>Login</h2>
+
+        <form [formGroup]="loginForm">
+
+            <input type="email" formControlName="email" placeholder="Email address">
+            <input type="password" formControlName="password" placeholder="Password">
+
+            <button type="button" class="btn-auth" (click)="login()">Log in</button>
+
+        </form>
+
+        <p>Already have an account?
+            <a routerLink="/register">Sign up</a>
+        </p>
+
+    </div>
+</section>
