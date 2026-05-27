@@ -1,12 +1,12 @@
-from pydantic import BaseModel                    # Validación de datos
+from pydantic import BaseModel
 
-class UserCreate(BaseModel):                      # Datos que recinimos al crear
-    name: str
+class UserCreate(BaseModel):
+    username: str
     email: str
     password: str
 
-class UserRead(UserCreate):                       # Datos que devolvemos
+class UserRead(UserCreate):
     id: int
 
     class Config:
-        from_attributes = True                    # Permite coonvertir desde OMR(Object Relational Mapping)
+        from_attributes = True

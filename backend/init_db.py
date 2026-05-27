@@ -13,13 +13,13 @@ def create_default_admin():
                 name="admin",
                 email="admin@restaurant.com",
                 hashed_password=hash_password("admin123"),
-                role=Rol.administrador
+
             )
             db.add(new_admin)
             db.commit()
-            print("Administrador creado correctamente")
+            print("Admin created successfully")
         else:
-            print("Administrador ya existe")
+            print("Admin already exists")
 
     finally:
         db.close()

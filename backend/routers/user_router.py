@@ -7,9 +7,8 @@ from pydantic import BaseModel
 
 class UserResponse(BaseModel):
     id: int
-    name: str
+    username: str
     email: str
-    is_admin: bool
  
     class Config:
         from_attributes = True
@@ -31,7 +30,7 @@ def get_users(db: Session = Depends(get_db)):
 @router.post("/", response_model=UserRead)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = User(
-        name=user.name,
+        username=user.username,
         email=user.email,
         password=user.password
     )
