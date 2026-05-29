@@ -1,0 +1,50 @@
+.dashboard-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.filters button {
+    margin-right: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.item-form {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 400px;
+}
+
+.library-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.library-table th,
+.library-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.library-table th {
+    background: #f4f4f4;
+}
+
+.library-table tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.library-table button {
+    margin-right: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+}

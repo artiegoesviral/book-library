@@ -1,51 +1,120 @@
-<button (click)="setType('book')">Books</button>
-<button (click)="setType('comic')">Comics</button>
+<div class="dashboard-container">
 
-<form [formGroup]="form">
+    <div class="top-bar">
+        <button (click)="logout()">Logout</button>
+    </div>
 
-    <input type="text" placeholder="Title" formControlName="title">
-    <input type="text" placeholder="Author" formControlName="author">
-    <input type="text" placeholder="Genre" formControlName="genre">
+    <h1>My Library</h1>
 
-    <select formControlName="format">
-        @for (format of formats; track format) {
-        <option [value]="format">
-            {{ format }}
-        </option>
-        }
-    </select>
+    <div class="filters">
+        <button type="button" (click)="setType('all')">All</button>
+        <button type="button" (click)="setType('book')">Books</button>
+        <button type="button" (click)="setType('comic')">Comics</button>
+    </div>
 
-    <label>
-        <input type="checkbox" formControlName="read">
-        Read
-    </label>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="item-form">
 
-    <button type="button" (click)="submit()">
-        Add
-    </button>
+        <input type="text" formControlName="title" placeholder="Title">
 
-</form>
+        <input type="text" formControlName="author" placeholder="Author">
 
-@for (
-item of items.filter(i => i.media_type === selectedType);
-track item.id
-) {
+        <input type="text" formControlName="genre" placeholder="Genre">
 
-<div class="item-card">
+        <input type="text" formControlName="language" placeholder="Language">
 
-    <h3>{{ item.title }}</h3>
-    <p>{{ item.author }}</p>
-    <p>{{ item.genre }}</p>
-    <p>{{ item.format }}</p>
+        <select formControlName="format">
+            @for (format of formats; track format) {
+            <option [value]="format">
+                {{ format }}
+            </option>
+            }
+        </select>
 
-    @if (item.read) {
-    <span>Read</span>
+        <label>
+            <input type="checkbox" formControlName="read">
+            Read
+        </label>
+
+        <select formControlName="media_type">
+            <option value="book">book</option>
+            <option value="comic">comic</option>
+        </select>
+
+        <button type="submit">
+            {{ editingId ? 'Update Item' : 'Add Item' }}
+        </button>
+
+    </form>
+
+    <div>
+        <select #sortSelect (change)="sortItems(sortSelect.value)">
+            <option value="">Sort by...</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="genre">Genre</option>
+            <option value="language">Language</option>
+        </select>
+    </div>
+
+    @if (items.length > 0) {
+
+    <table class="library-table">
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Language</th>
+                <th>Type</th>
+                <th>Format</th>
+                <th>Read</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @for (item of items; track item.id) {
+
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.author }}</td>
+                <td>{{ item.genre }}</td>
+                <td>{{ item.language }}</td>
+                <td>{{ item.media_type }}</td>
+                <td>{{ item.format }}</td>
+                <td>{{ item.read ? 'Yes' : 'No' }}</td>
+                <td>
+
+
+                    <button type="button" (click)="startEdit(item)">
+                        Edit
+                    </button>
+
+                    <button (click)="deleteItem(item.id)">
+                        Delete
+                    </button>
+
+                    @if (editingId === item.id) {
+                    <button type="button" (click)="cancelEdit()">
+                        Cancel
+                    </button>
+                    }
+
+                </td>
+            </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
     } @else {
-    <span>Unread</span>
+
+    <p>No items found.</p>
+
     }
 
 </div>
-
-}
-
-<button (click)="logout()">Logout</button>

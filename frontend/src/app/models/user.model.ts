@@ -7,7 +7,6 @@ export interface User {
 export interface RegisterResponse {
     access_token: string;
     token_type: string;
-    is_admin: boolean;
 }
 
 export interface DeleteResponse {

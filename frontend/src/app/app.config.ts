@@ -6,7 +6,6 @@ import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { authInterceptor } from './interceptors/auth-interceptor';
 
-// export const API_BASE_URL = environment.apiBaseUrl;
 
 export const appConfig = {
   providers: [

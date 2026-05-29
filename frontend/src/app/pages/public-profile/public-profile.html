@@ -1,1 +1,43 @@
-<p>public-profile works!</p>
+<h1>{{ username }}'s Library</h1>
+
+@if (items.length > 0) {
+
+<table class="library-table">
+
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Language</th>
+            <th>Type</th>
+            <th>Format</th>
+            <th>Read</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @for (item of items; track item.id) {
+
+        <tr>
+            <td>{{ item.title }}</td>
+            <td>{{ item.author }}</td>
+            <td>{{ item.genre }}</td>
+            <td>{{ item.language }}</td>
+            <td>{{ item.media_type }}</td>
+            <td>{{ item.format }}</td>
+            <td>{{ item.read ? 'Yes' : 'No' }}</td>
+        </tr>
+
+        }
+
+    </tbody>
+
+</table>
+
+} @else {
+
+<p>This library is empty.</p>
+
+}
