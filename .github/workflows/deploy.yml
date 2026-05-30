@@ -1,4 +1,4 @@
-name: Deploy
+name: Build and Deploy
 
 on:
   push:
@@ -6,23 +6,68 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      # Build Angular
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install Angular dependencies
+        run: |
+          cd frontend
+          npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build Angular
+        run: |
+          cd frontend
+          npm run build -- --configuration production
 
+      # Test Python
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          cd backend
+          pytest
+
+      # Deploy to server
       - name: Deploy
-        run: echo "Deploy commands go here"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/myapp
+
+            git pull origin main
+
+            # Backend
+            cd backend
+            source venv/bin/activate
+            pip install -r requirements.txt
+
+            sudo systemctl restart myapp
+
+            # Frontend
+            cd ../frontend
+            npm ci
+            npm run build -- --configuration production
+
+            sudo rm -rf /var/www/html/*
+            sudo cp -r dist/* /var/www/html/
