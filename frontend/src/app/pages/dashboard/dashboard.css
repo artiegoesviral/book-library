@@ -1,4 +1,5 @@
 .dashboard-container {
+    background-color: #c4dacb;
     padding: 20px;
     font-family: Arial, sans-serif;
 }
@@ -10,8 +11,9 @@
 }
 
 .filters button {
-    margin-right: 8px;
-    padding: 6px 12px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 6px 20px;
     cursor: pointer;
 }
 
@@ -44,7 +46,11 @@
 }
 
 .library-table button {
-    margin-right: 6px;
+    margin-right: 20px;
     padding: 4px 8px;
     cursor: pointer;
+}
+
+.sort-button {
+    margin-top: 100px;
 }
