@@ -2,43 +2,40 @@ name: Build and Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # FRONTEND (Angular)
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install Angular dependencies
-        run: |
-          cd frontend
-          npm ci
-
       - name: Build Angular
         run: |
           cd frontend
-          npm run build -- --configuration production
+          npm ci
+          npm run build --configuration production
 
+      # BACKEND (FastAPI)
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install Python dependencies
+      - name: Install backend deps
         run: |
           cd backend
-          pip install -r requirements.txt
+          pip install fastapi uvicorn sqlalchemy pymysql
 
-      # Deploy to server
+      # DEPLOY TO SERVER (VPS example)
       - name: Deploy
         uses: appleboy/ssh-action@v1
         with:
@@ -47,20 +44,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /opt/myapp
+            git pull
 
-            git pull origin main
+            # restart backend
+            systemctl restart myapp
 
-            # Backend
-            cd backend
-            source venv/bin/activate
-            pip install -r requirements.txt
-
-            sudo systemctl restart myapp
-
-            # Frontend
-            cd ../frontend
-            npm ci
-            npm run build -- --configuration production
-
-            sudo rm -rf /var/www/html/*
-            sudo cp -r dist/* /var/www/html/
+            # update frontend
+            rm -rf /var/www/html/*
+            cp -r frontend/dist/* /var/www/html/
