@@ -36,15 +36,15 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
+          host: ${{ secrets.DB_HOST }}
+          username: ${{ secrets.DB_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /opt/myapp
+            cd /opt/book-library
             git pull
 
             # restart backend
-            systemctl restart myapp
+            systemctl restart book-library
 
             # update frontend
             rm -rf /var/www/html/*
