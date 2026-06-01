@@ -140,8 +140,6 @@ export class DashboardComponent {
 
   startEdit(item: any) {
 
-    console.log('EDIT CLICKED', item);
-
     this.editingId = item.id;
 
     this.form.patchValue({
