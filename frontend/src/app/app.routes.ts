@@ -33,7 +33,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'user/:username',
+        path: 'items/user/:username',
         component: PublicProfileComponent,
     },
 

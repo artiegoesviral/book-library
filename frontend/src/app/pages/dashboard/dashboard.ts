@@ -63,9 +63,7 @@ export class DashboardComponent {
 
   loadItems(type: 'all' | 'book' | 'comic' = this.selectedType) {
 
-    console.log('LOADING:', type);
-
-    let url = 'http://127.0.0.1:8000/items/me';
+    let url = 'https://book-library-g1es.onrender.com/items/me';
 
     if (type !== 'all') {
       url += `?media_type=${type}`;
@@ -74,7 +72,7 @@ export class DashboardComponent {
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
 
-        this.items = [...data];
+        this.items = data ?? [];
 
         if (this.sortField) {
           this.sortItems(this.sortField);
@@ -107,7 +105,7 @@ export class DashboardComponent {
     };
 
     this.http.post(
-      'http://127.0.0.1:8000/items/',
+      'https://book-library-g1es.onrender.com/items/',
       newItem
     ).subscribe({
       next: () => {
@@ -127,7 +125,7 @@ export class DashboardComponent {
 
   deleteItem(id: number) {
     this.http.delete(
-      `http://127.0.0.1:8000/items/${id}`
+      `https://book-library-g1es.onrender.com/items/${id}`
     ).subscribe({
       next: () => {
         this.loadItems(this.selectedType);
@@ -180,7 +178,7 @@ export class DashboardComponent {
     };
 
     this.http.put(
-      `http://127.0.0.1:8000/items/${this.editingId}`,
+      `https://book-library-g1es.onrender.com/items/${this.editingId}`,
       updatedItem
     ).subscribe({
       next: () => {

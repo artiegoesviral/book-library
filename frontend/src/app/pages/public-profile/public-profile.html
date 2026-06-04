@@ -1,43 +1,63 @@
-<h1>{{ username }}'s Library</h1>
+<div class="profile-container">
 
-@if (items.length > 0) {
+    @if (userNotFound) {
+    <p>User not found</p>
+    }
 
-<table class="library-table">
+    @else if (loading) {
+    <p>Loading...</p>
+    }
 
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Language</th>
-            <th>Type</th>
-            <th>Format</th>
-            <th>Read</th>
-        </tr>
-    </thead>
+    @else {
 
-    <tbody>
+    <h1>{{ username }}'s Library</h1>
 
-        @for (item of items; track item.id) {
+    <div class="sort-button">
+        <select #sortSelect (change)="sortItems(sortSelect.value)">
+            <option value="">Sort by...</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="genre">Genre</option>
+            <option value="language">Language</option>
+        </select>
+    </div>
 
-        <tr>
-            <td>{{ item.title }}</td>
-            <td>{{ item.author }}</td>
-            <td>{{ item.genre }}</td>
-            <td>{{ item.language }}</td>
-            <td>{{ item.media_type }}</td>
-            <td>{{ item.format }}</td>
-            <td>{{ item.read ? 'Yes' : 'No' }}</td>
-        </tr>
+    @if (libraryItems.length === 0) {
+    <p>No books found.</p>
+    }
 
-        }
+    @if (libraryItems.length > 0) {
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Language</th>
+                    <th>Type</th>
+                    <th>Format</th>
+                    <th>Read</th>
+                </tr>
+            </thead>
 
-    </tbody>
+            <tbody>
+                @for (item of libraryItems; track item.id) {
+                <tr>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.author }}</td>
+                    <td>{{ item.genre }}</td>
+                    <td>{{ item.language }}</td>
+                    <td>{{ item.media_type }}</td>
+                    <td>{{ item.format }}</td>
+                    <td>{{ item.read ? 'Yes' : 'No' }}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
 
-</table>
+    }
 
-} @else {
-
-<p>This library is empty.</p>
-
-}
+</div>

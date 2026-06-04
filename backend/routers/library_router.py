@@ -45,11 +45,13 @@ def get_user_items(
     ).first()
 
     if not user:
-        raise HTTPException(status_code=404)
+        raise HTTPException(status_code=404, detail="User not found")
 
-    return db.query(LibraryItem).filter(
+    items = db.query(LibraryItem).filter(
         LibraryItem.owner_id == user.id
     ).all()
+
+    return items
 
 
 @router.post("/")
