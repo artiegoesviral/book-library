@@ -52,8 +52,26 @@
             <option value="title">Title</option>
             <option value="author">Author</option>
             <option value="genre">Genre</option>
+            <option value="format">Format</option>
+            <option value="media_type">Type</option>
             <option value="language">Language</option>
+            <option value="read">Read status</option>
         </select>
+    </div>
+
+    <div class="filter-button">
+        <select #filterType>
+            <option value="">Filter by...</option>
+            <option value="author">Author</option>
+            <option value="genre">Genre</option>
+            <option value="format">Format</option>
+            <option value="media_type">Type</option>
+            <option value="language">Language</option>
+            <option value="read">Read status</option>
+        </select>
+
+        <input #filterValue type="text" placeholder="Filter value"
+            (input)="filterItems(filterType.value, filterValue.value)">
     </div>
 
     @if (items.length > 0) {

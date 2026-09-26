@@ -41,7 +41,7 @@ export class DashboardComponent {
     private http: HttpClient,
     private cdr: ChangeDetectorRef
   ) {
-    this.loadItems('book');
+    this.loadItems('all');
   }
 
   logout() {
@@ -206,4 +206,20 @@ export class DashboardComponent {
 
     this.cdr.detectChanges();
   }
+
+  filterItems(field: string, value: string) {
+    if (value.trim() === '') {
+      this.loadItems(this.selectedType);
+      return;
+    }
+
+    this.items = this.items.filter(item => {
+      if (field === 'read') {
+        return item.read === (value.toLowerCase() === 'read');
+      }
+
+      return item[field]?.toLowerCase().includes(value.toLowerCase());
+    });
+  }
+
 }
