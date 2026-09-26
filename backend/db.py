@@ -19,7 +19,7 @@ engine = create_engine(
     echo=True,
     connect_args={
         "ssl": {
-            "ca": "/etc/ssl/cert.pem"
+            "ca": "/etc/ssl/certs/ca-certificates.crt"
         }
     },
 )
