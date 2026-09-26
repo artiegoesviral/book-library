@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Angular
         working-directory: frontend
-        run: ng build --configuration production --base-href /book-library/
+        run: npx ng build --configuration production --base-href /book-library/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
