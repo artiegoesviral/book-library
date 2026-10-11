@@ -1,4 +1,4 @@
-import os
+import os, certifi
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
@@ -19,7 +19,7 @@ engine = create_engine(
     echo=True,
     connect_args={
         "ssl": {
-            "ca": "/etc/ssl/cert.pem"
+            "ca": certifi.where()
         }
     },
 )
