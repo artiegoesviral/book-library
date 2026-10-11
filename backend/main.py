@@ -11,7 +11,7 @@ from routers.user_router import router as user_router
 
 app = FastAPI(title="Book Database") 
 
-origins = [ "http://localhost:4200", "http://127.0.0.1:8000" ] 
+origins = [ "http://localhost:4200", "http://127.0.0.1:4200" ] 
 
 app.add_middleware( CORSMiddleware, 
 allow_origins=[
