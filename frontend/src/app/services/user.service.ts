@@ -8,7 +8,7 @@ import { DeleteResponse, User } from '../models/user.model';
 })
 export class UserService {
 
-  private API_BASE = 'http://127.0.0.1:8000';
+  private API_BASE = 'https://book-library-g1es.onrender.com';
   private http = inject(HttpClient);
 
   constructor() { }

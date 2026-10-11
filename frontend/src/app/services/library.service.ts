@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class LibraryService {
 
-  private apiUrl = 'http://127.0.0.1:8000/items';
+  private apiUrl = 'https://book-library-g1es.onrender.com/items';
   http: any;
   items: any;
 

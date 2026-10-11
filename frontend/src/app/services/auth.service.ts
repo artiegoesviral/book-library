@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
 
-  private apiUrl = 'http://127.0.0.1:8000';
+  private apiUrl = 'https://book-library-g1es.onrender.com';
 
   constructor(private http: HttpClient) { }
 
