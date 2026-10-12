@@ -3,8 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Redirecting...</title>
-    <script> const segment = 1; const location = window.location; const base = location.pathname.split('/').slice(0, 1 + segment).join('/'); const route = location.pathname.slice(base.length); const redirect = base + '/?/' + route + location.search + location.hash; location.replace(redirect); </script>
+    <title>Page not found</title>
+    <script> const segmentCount = 1; const currentPath = window.location.pathname; const basePath = currentPath.split('/').slice(0, segmentCount + 1).join('/');
+
+        const routePath = currentPath.slice(basePath.length); const redirectUrl = basePath + '/?/' + routePath + window.location.search + window.location.hash;
+
+        window.location.replace(redirectUrl); </script>
 </head>
 
 <body> Redirecting... </body>
