@@ -47,7 +47,7 @@ export class PublicProfileComponent implements OnInit {
     this.userNotFound = false;
 
     this.http.get<any[]>(
-      `https://book-library-g1es.onrender.com/items/user/${this.username}`
+      `https://book-library-g1es.onrender.com/user/${this.username}`
     ).subscribe({
       next: (data: any[]) => {
         this.libraryItems = data;
