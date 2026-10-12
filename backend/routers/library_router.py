@@ -9,7 +9,7 @@ from models.user_model import User
 from schemas.library_item_schema import LibraryItemCreate
 from models.library_item_model import MediaType
 
-router = APIRouter(prefix="/")
+router = APIRouter(prefix="/items")
 
 
 @router.get("/me")
