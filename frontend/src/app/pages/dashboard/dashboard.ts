@@ -223,7 +223,7 @@ export class DashboardComponent {
   }
 
   navigateToProfile() {
-    this.router.navigate(['/items/user/:username']);
+    this.router.navigate(['/items/user/${this.username}']);
   }
 
 }
