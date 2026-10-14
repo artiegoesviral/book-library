@@ -81,6 +81,6 @@ export class PublicProfileComponent implements OnInit {
   }
 
   navigateToDashboard(): void {
-    window.location.href = '/dashboard';
+    window.location.href = '/book-library/dashboard';
   }
 }
