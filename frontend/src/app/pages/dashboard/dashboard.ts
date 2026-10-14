@@ -228,7 +228,7 @@ export class DashboardComponent {
     if (username) {
       this.router.navigate(['/items/user', username]);
     } else {
-      console.error('Username not found. Please log in again.');
+      console.error('Username not found.');
     }
   }
 }

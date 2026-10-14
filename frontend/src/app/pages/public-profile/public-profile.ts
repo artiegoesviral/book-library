@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
@@ -17,12 +17,12 @@ export class PublicProfileComponent implements OnInit {
   libraryItems: any[] = [];
   loading = true;
   userNotFound = false;
-  router: any;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -80,7 +80,7 @@ export class PublicProfileComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  navigateToDashboard() {
-    this.router.navigate(['/dashboard']);
+  navigateToDashboard(): void {
+    window.location.href = '/dashboard';
   }
 }
