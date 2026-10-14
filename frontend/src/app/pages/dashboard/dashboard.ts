@@ -223,7 +223,12 @@ export class DashboardComponent {
   }
 
   navigateToProfile() {
-    this.router.navigate(['/items/user/${this.username}']);
-  }
+    const username = localStorage.getItem('username');
 
+    if (username) {
+      this.router.navigate(['/items/user', username]);
+    } else {
+      console.error('Username not found. Please log in again.');
+    }
+  }
 }
