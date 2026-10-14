@@ -222,4 +222,8 @@ export class DashboardComponent {
     });
   }
 
+  navigateToProfile() {
+    this.router.navigate(['/items/user/:username']);
+  }
+
 }

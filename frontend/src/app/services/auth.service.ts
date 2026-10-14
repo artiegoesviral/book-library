@@ -12,19 +12,15 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   register(username: string, email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/register`, {
+    return this.http.post<{ message: string; user_id: number; }>(`${this.apiUrl}/register`, {
       username,
       email,
       password
-    }).pipe(
-      tap(res => {
-        localStorage.setItem('token', res.access_token);
-      })
-    );
+    });
   }
 
   login(email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/login`, {
+    return this.http.post<{ access_token: string; tokentype: string; user: { id: number; username: string; email: string; } }>(`${this.apiUrl}/login`, {
       email,
       password
     }).pipe(
