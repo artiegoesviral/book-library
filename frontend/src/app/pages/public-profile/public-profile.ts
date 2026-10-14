@@ -17,6 +17,7 @@ export class PublicProfileComponent implements OnInit {
   libraryItems: any[] = [];
   loading = true;
   userNotFound = false;
+  router: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -77,5 +78,9 @@ export class PublicProfileComponent implements OnInit {
     );
 
     this.cdr.detectChanges();
+  }
+
+  navigateToDashboard() {
+    this.router.navigate(['/dashboard']);
   }
 }
