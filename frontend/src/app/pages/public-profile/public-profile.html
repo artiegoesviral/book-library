@@ -9,12 +9,31 @@
     }
 
     @else {
-
     <div class="top-bar">
-        <button type="button" (click)="navigateToDashboard()">Home</button>
+        <button type="button" (click)="navigateToDashboard()">
+            Home
+        </button>
     </div>
 
     <h1>{{ username }}'s Library</h1>
+
+    <div class="filters">
+        <button type="button" [class.active]="selectedType === 'all'" (click)="setType('all')">
+            All
+        </button>
+
+        <button type="button" [class.active]="selectedType === 'book'" (click)="setType('book')">
+            Books
+        </button>
+
+        <button type="button" [class.active]="selectedType === 'comic'" (click)="setType('comic')">
+            Comics
+        </button>
+
+        <button type="button" [class.active]="selectedType === 'currently'" (click)="setType('currently')">
+            Currently Reading
+        </button>
+    </div>
 
     <div class="sort-button">
         <select #sortSelect (change)="sortItems(sortSelect.value)">
@@ -27,11 +46,21 @@
         </select>
     </div>
 
-    @if (libraryItems.length === 0) {
-    <p>No books found.</p>
+    @if (filteredItems.length === 0) {
+    <p>
+        @if (selectedType === 'currently') {
+        No items currently being read.
+        } @else if (selectedType === 'book') {
+        No books found.
+        } @else if (selectedType === 'comic') {
+        No comics found.
+        } @else {
+        No items found.
+        }
+    </p>
     }
 
-    @if (libraryItems.length > 0) {
+    @if (filteredItems.length > 0) {
     <div class="table-wrapper">
         <table>
             <thead>
@@ -47,7 +76,7 @@
             </thead>
 
             <tbody>
-                @for (item of libraryItems; track item.id) {
+                @for (item of filteredItems; track item.id) {
                 <tr>
                     <td>{{ item.title }}</td>
                     <td>{{ item.author }}</td>
@@ -62,7 +91,6 @@
         </table>
     </div>
     }
-
     }
 
 </div>

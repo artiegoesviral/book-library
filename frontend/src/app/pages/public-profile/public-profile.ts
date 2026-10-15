@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
+
+type LibraryFilter = 'all' | 'book' | 'comic' | 'currently';
 
 @Component({
   selector: 'app-public-profile',
@@ -18,6 +19,9 @@ export class PublicProfileComponent implements OnInit {
   loading = true;
   userNotFound = false;
 
+  selectedType: LibraryFilter = 'all';
+  sortField = '';
+
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -28,6 +32,8 @@ export class PublicProfileComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.username = params['username'];
+      this.selectedType = 'all';
+      this.sortField = '';
 
       this.resetState();
       this.loadLibrary();
@@ -40,48 +46,56 @@ export class PublicProfileComponent implements OnInit {
     this.libraryItems = [];
   }
 
-  debugId = Math.random();
-
   loadLibrary(): void {
     this.loading = true;
-
     this.userNotFound = false;
 
     this.http.get<any[]>(
-      `https://book-library-g1es.onrender.com/items/user/${this.username}`
+      `https://book-library-g1es.onrender.com/items/user/${encodeURIComponent(this.username)}`
     ).subscribe({
-      next: (data: any[]) => {
-        this.libraryItems = data;
+      next: (data) => {
+        this.libraryItems = data ?? [];
         this.loading = false;
-
-        this.cdr.detectChanges(); //
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        console.log("ERROR STATUS:", err.status);
+        console.error('Load public library error:', err);
         this.loading = false;
-
-        if (err.status === 404) {
-          console.log("userNotFound =", this.userNotFound);
-          console.log("loading =", this.loading);
-          this.userNotFound = true;
-        }
-
-        console.log(err);
+        this.userNotFound = err.status === 404;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  sortItems(field: string) {
+  setType(type: LibraryFilter): void {
+    this.selectedType = type;
+  }
 
-    this.libraryItems = [...this.libraryItems].sort((a, b) =>
-      (a[field] || '').localeCompare(b[field] || '')
-    );
+  get filteredItems(): any[] {
+    let result = [...this.libraryItems];
 
-    this.cdr.detectChanges();
+    if (this.selectedType === 'currently') {
+      result = result.filter(item => item.currently === true);
+    } else if (this.selectedType === 'book' || this.selectedType === 'comic') {
+      result = result.filter(item => item.media_type === this.selectedType);
+    }
+
+    if (this.sortField) {
+      const field = this.sortField;
+
+      result.sort((a, b) =>
+        String(a[field] ?? '').localeCompare(String(b[field] ?? ''))
+      );
+    }
+
+    return result;
+  }
+
+  sortItems(field: string): void {
+    this.sortField = field;
   }
 
   navigateToDashboard(): void {
-    window.location.href = '/book-library/dashboard';
+    this.router.navigate(['/book-library/dashboard']);
   }
-
 }
