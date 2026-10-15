@@ -51,10 +51,10 @@ export class DashboardComponent {
   }
 
   setType(type: 'currently' | 'all' | 'book' | 'comic') {
+    console.log('Tab clicked:', type);
 
     this.selectedType = type;
-
-    this.loadItems(this.selectedType);
+    this.loadItems(type);
   }
 
   clearFilter() {
@@ -66,18 +66,20 @@ export class DashboardComponent {
     type: 'currently' | 'all' | 'book' | 'comic' = this.selectedType
   ) {
 
-    const url = 'https://book-library-g1es.onrender.com/items/me';
+    const baseUrl = 'https://book-library-g1es.onrender.com/items/me';
 
-    const params: Record<string, string> = {};
+    const url = type === 'all'
+      ? baseUrl
+      : `${baseUrl}?media_type=${encodeURIComponent(type)}`;
 
-    if (type !== 'all') {
-      params['media_type'] = type;
-    }
+    console.log('Selected type:', type);
+    console.log('Request URL:', url);
 
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
+        console.log('Returned data:', data);
+
         this.items = data ?? [];
-        this.cdr.detectChanges();
 
         if (this.sortField) {
           this.sortItems(this.sortField);
