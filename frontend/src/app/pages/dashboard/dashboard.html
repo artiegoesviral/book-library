@@ -11,6 +11,7 @@
         <button type="button" (click)="setType('all')">All</button>
         <button type="button" (click)="setType('book')">Books</button>
         <button type="button" (click)="setType('comic')">Comics</button>
+        <button type="button" (click)="setType('currently')">Currently Reading</button>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="item-form">
@@ -34,6 +35,11 @@
         <label>
             <input type="checkbox" formControlName="read">
             Read
+        </label>
+
+        <label>
+            <input type="checkbox" formControlName="currently">
+            Currently Reading
         </label>
 
         <select formControlName="media_type">

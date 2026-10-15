@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DashboardComponent {
 
-  selectedType: 'book' | 'comic' | 'all' = 'all';
+  selectedType: 'currently' | 'book' | 'comic' | 'all' = 'all';
 
   items: any[] = [];
 
@@ -32,7 +32,8 @@ export class DashboardComponent {
     language: new FormControl(''),
     format: new FormControl('physical'),
     read: new FormControl(false),
-    media_type: new FormControl('book')
+    media_type: new FormControl('book'),
+    currently: new FormControl(false)
   });
 
   constructor(
@@ -49,7 +50,7 @@ export class DashboardComponent {
     this.router.navigate(['/login']);
   }
 
-  setType(type: 'all' | 'book' | 'comic') {
+  setType(type: 'currently' | 'all' | 'book' | 'comic') {
 
     this.selectedType = type;
 
@@ -61,17 +62,20 @@ export class DashboardComponent {
     this.loadItems(this.selectedType);
   }
 
-  loadItems(type: 'all' | 'book' | 'comic' = this.selectedType) {
+  loadItems(
+    type: 'currently' | 'all' | 'book' | 'comic' = this.selectedType
+  ) {
 
-    let url = 'https://book-library-g1es.onrender.com/items/me';
+    const url = 'https://book-library-g1es.onrender.com/items/me';
+
+    const params: Record<string, string> = {};
 
     if (type !== 'all') {
-      url += `?media_type=${type}`;
+      params['media_type'] = type;
     }
 
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
-
         this.items = data ?? [];
 
         if (this.sortField) {
@@ -101,7 +105,8 @@ export class DashboardComponent {
       language: this.form.value.language ?? '',
       format: this.form.value.format ?? 'physical',
       read: this.form.value.read ?? false,
-      media_type: this.form.value.media_type ?? 'book'
+      media_type: this.form.value.media_type ?? 'book',
+      currently: this.form.value.currently ?? false
     };
 
     this.http.post(
@@ -147,7 +152,8 @@ export class DashboardComponent {
       language: item.language,
       format: item.format,
       read: item.read,
-      media_type: item.media_type
+      media_type: item.media_type,
+      currently: item.currently
     });
   }
 
@@ -157,7 +163,8 @@ export class DashboardComponent {
     this.form.reset({
       format: 'physical',
       read: false,
-      media_type: 'book'
+      media_type: 'book',
+      currently: false
     });
   }
 
@@ -174,7 +181,8 @@ export class DashboardComponent {
       language: this.form.value.language ?? '',
       format: this.form.value.format ?? 'physical',
       read: this.form.value.read ?? false,
-      media_type: this.form.value.media_type ?? 'book'
+      media_type: this.form.value.media_type ?? 'book',
+      currently: this.form.value.currently ?? false
     };
 
     this.http.put(
@@ -187,7 +195,8 @@ export class DashboardComponent {
 
         this.form.reset({
           format: 'physical',
-          read: false
+          read: false,
+          currently: false
         });
 
         this.loadItems(this.selectedType);

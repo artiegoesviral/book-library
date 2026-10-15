@@ -10,7 +10,9 @@
 
     @else {
 
-    <button type="button" (click)="navigateToDashboard()">Home</button>
+    <div class="top-bar">
+        <button type="button" (click)="navigateToDashboard()">Home</button>
+    </div>
 
     <h1>{{ username }}'s Library</h1>
 
@@ -20,6 +22,7 @@
             <option value="title">Title</option>
             <option value="author">Author</option>
             <option value="genre">Genre</option>
+            <option value="media_type">Type</option>
             <option value="language">Language</option>
         </select>
     </div>
