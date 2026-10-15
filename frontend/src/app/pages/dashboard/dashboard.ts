@@ -77,6 +77,7 @@ export class DashboardComponent {
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
         this.items = data ?? [];
+        this.cdr.detectChanges();
 
         if (this.sortField) {
           this.sortItems(this.sortField);

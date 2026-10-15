@@ -26,26 +26,33 @@ def get_my_items(
         LibraryItem.owner_id == current_user.id
     )
 
-    if media_type and media_type != "all":
+    if media_type == "currently":
+        query = query.filter(
+            LibraryItem.currently.is_(True)
+        )
+    elif media_type in ("book", "comic"):
         query = query.filter(
             LibraryItem.media_type == MediaType(media_type)
         )
+    elif media_type not in (None, "", "all"):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid media_type filter"
+        )
 
-        if media_type == "currently":
-            query = query.filter(
-                LibraryItem.currently.is_(True)
-            )
-        elif media_type in ("book", "comic"):
-            query = query.filter(
-                LibraryItem.media_type == MediaType(media_type)
-            )
-        elif media_type not in (None, "", "all"):
-            raise HTTPException(
-                status_code=400,
-                detail="Invalid media_type filter"
-            )
+    items = query.all()
 
-    return query.all()
+    print("Requested filter:", media_type)
+    print("Returned items:", [
+        {
+            "id": item.id,
+            "title": item.title,
+            "currently": item.currently
+        }
+        for item in items
+    ])
+
+    return items
 
 
 @router.get("/user/{username}")
