@@ -1,7 +1,10 @@
+from unittest import result
+
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from db import get_db
 from dependencies import get_current_user
 from models.library_item_model import ItemFormat, LibraryItem, MediaType
@@ -28,8 +31,19 @@ def get_my_items(
             LibraryItem.media_type == MediaType(media_type)
         )
 
-        print("FILTER RECEIVED:", media_type)
-        print("QUERY COUNT BEFORE:", query.count())
+        if media_type == "currently":
+            query = query.filter(
+                LibraryItem.currently.is_(True)
+            )
+        elif media_type in ("book", "comic"):
+            query = query.filter(
+                LibraryItem.media_type == MediaType(media_type)
+            )
+        elif media_type not in (None, "", "all"):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid media_type filter"
+            )
 
     return query.all()
 
@@ -69,7 +83,8 @@ def create_item(
     media_type=item.media_type,
     read=item.read,
     format=item.format,
-    owner_id=user.id
+    owner_id=user.id,
+    currently=item.currently
 )
 
     try:
@@ -111,6 +126,7 @@ def delete_item(
 
     return {"message": "Deleted"}
 
+
 @router.put("/{item_id}")
 def update_item(
     item_id: int,
@@ -126,6 +142,8 @@ def update_item(
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
 
+    print("Incoming currently:", updated_item.currently)
+
     item.title = updated_item.title
     item.author = updated_item.author
     item.genre = updated_item.genre
@@ -133,23 +151,23 @@ def update_item(
     item.media_type = updated_item.media_type
     item.read = updated_item.read
     item.format = updated_item.format
+    item.currently = updated_item.currently
 
     db.commit()
     db.refresh(item)
 
+    result = db.execute(
+    text("""
+        SELECT currently
+        FROM library_items
+        WHERE id = :item_id
+    """),
+    {"item_id": item_id}
+).scalar()
+
+    print("ORM value after refresh:", item.currently)
+    print("Database value after commit:", result)
+
+    print("Saved currently:", item.currently)
+
     return item
-
-@router.get("/me")
-def get_my_items(
-    media_type: str | None = None,
-    db: Session = Depends(get_db),
-    user: User = Depends(get_current_user)
-):
-    query = db.query(LibraryItem).filter(
-        LibraryItem.owner_id == user.id
-    )
-
-    if media_type:
-        query = query.filter(LibraryItem.media_type == media_type)
-
-    return query.all()

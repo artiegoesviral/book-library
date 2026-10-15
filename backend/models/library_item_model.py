@@ -35,3 +35,5 @@ class LibraryItem(Base):
         nullable=False
     ) 
     owner_id = Column(Integer, ForeignKey("users.id"))
+
+    currently = Column(Boolean, default=False)

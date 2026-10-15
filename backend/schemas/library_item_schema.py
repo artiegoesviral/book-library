@@ -18,6 +18,7 @@ class LibraryItemCreate(BaseModel):
     media_type: MediaType
     read: bool
     format: ItemFormat
+    currently: bool
 
 class LibraryItemResponse(LibraryItemCreate):
     id: int
